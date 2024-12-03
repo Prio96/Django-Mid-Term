@@ -5,7 +5,7 @@
         {% if car.image %}
         <img src="{{car.image.url}}" alt="">
         {% endif %}
-        <div class="card p-2">
+        <div class="card p-2 bg-white">
             <h2>{{car.name}}</h2>
             <h3>Price: BDT <span><p>{{car.price}}</p></span></h3>
             <h3>Quantity: <span><p>{{car.quantity}}</p></span></h3>
@@ -14,7 +14,24 @@
             <a href="{% url 'BuyCar' %}" class="btn btn-warning mx-auto">Buy Now</a>
         </div>
     </div>
-
+    <div class="ms-2 mt-1 bg-white">
+        {% if request.user.is_authenticated %}
+            <h2>Make a comment</h2>
+            <form method="post" class="my-1 border">
+                {% csrf_token %}
+                {{comment_form|crispy}}
+            </form>
+            {% else %}
+            <p><a href="{% url 'Login' %}" class="btn btn-primary">Login</a> to write a comment</p>
+        {% endif %}
+        {% for comment in comments %}
+            <div class="my-1 border">
+                <h1>{{comment.commenter}}</h1>
+                <small>Commented at {{comment.time}}</small>
+                <p>{{comment.body}}</p>
+            </div>
+        {% endfor %}
+    </div>
     
 {% endblock content %}
 
