@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 # Create your views here.
 
 def Register(request):
@@ -33,7 +34,7 @@ class Login(LoginView):
         messages.success(self.request,"Logged In Successfully")
         return super().form_valid(form)
     
-@method_decorator(login_required,name='dispatch')    
+@login_required   
 def EditProfile(request):
     if request.method=='POST':
         form=UserDetailChange(request.POST,instance=request.user)
@@ -44,6 +45,10 @@ def EditProfile(request):
     else:
         form=UserDetailChange(instance=request.user)
     return render(request,'register.html',{'form':form,'type':'Edit Profile'})
+
+@login_required
+def ViewProfile(request):
+    return render(request,"profile.html")
 
 
 

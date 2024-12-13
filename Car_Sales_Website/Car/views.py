@@ -1,9 +1,11 @@
 from django.shortcuts import render,redirect
 from django.views.generic import DetailView
-from .models import CarModel
+from .models import CarModel,PurchaseModel
 from .forms import CommentForm
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 # Create your views here.
-
+# @method_decorator(login_required,name='dispatch') 
 class CarDetail(DetailView):
     model=CarModel
     pk_url_kwarg='id'
@@ -25,10 +27,14 @@ class CarDetail(DetailView):
         comment_form=CommentForm()
         context['comments']=comments
         context['comment_form']=comment_form
+        context['car']=car
         return context
-    
-def BuyCar(request):
+@login_required  
+def BuyCar(request,id):
     car=CarModel.objects.get(pk=id)
+    purchase_obj=PurchaseModel.objects.create(user=request.user,car=car)
+    purchase_obj.save()
     car.quantity=car.quantity-1
-    return redirect("CarDetail")
+    car.save()
+    return redirect("CarDetail",id=car.id)
 

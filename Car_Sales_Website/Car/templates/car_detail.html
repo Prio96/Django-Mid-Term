@@ -1,38 +1,43 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="d-flex justify-content-center gap-4">
-        {% if car.image %}
-        <img src="{{car.image.url}}" alt="">
+<div class="d-flex justify-content-center gap-4">
+    {% if car.image %}
+    <img src="{{car.image.url}}" class="object-fit-cover" style="height:40vh;width:50vw"alt="">
+    {% endif %}
+    <div class="card p-2 bg-white">
+        <h2>{{car.name}}</h2>
+        <p><b>Price:</b> BDT {{car.price}}</p>
+        <p><b>Quantity:</b> {{car.quantity}}</p>
+        <p>{{car.description}}</p>
+        <p><b>Brand:</b> {{car.brand.brand_name}}</p>
+        {% if car.quantity == 0 %}
+        <p class="text-danger">Out of Stock</p>
+        {% else %}
+        <a href="{% url 'BuyCar' car.id %}" class="btn btn-warning mx-auto">Buy Now</a>
         {% endif %}
-        <div class="card p-2 bg-white">
-            <h2>{{car.name}}</h2>
-            <h3>Price: BDT <span><p>{{car.price}}</p></span></h3>
-            <h3>Quantity: <span><p>{{car.quantity}}</p></span></h3>
-            <p>{{car.description}}</p>
-            <h3>Brand: <span><p>{{car.brand}}</p></span></h3>
-            <a href="{% url 'BuyCar' %}" class="btn btn-warning mx-auto">Buy Now</a>
-        </div>
     </div>
-    <div class="ms-2 mt-1 bg-white">
-        {% if request.user.is_authenticated %}
-            <h2>Make a comment</h2>
-            <form method="post" class="my-1 border">
-                {% csrf_token %}
-                {{comment_form|crispy}}
-            </form>
-            {% else %}
-            <p><a href="{% url 'Login' %}" class="btn btn-primary">Login</a> to write a comment</p>
-        {% endif %}
-        {% for comment in comments %}
-            <div class="my-1 border">
-                <h1>{{comment.commenter}}</h1>
-                <small>Commented at {{comment.time}}</small>
-                <p>{{comment.body}}</p>
-            </div>
-        {% endfor %}
+</div>
+<div class="ms-2 mt-1 bg-white p-3">
+    {% if request.user.is_authenticated %}
+    <h2>Make a comment</h2>
+    <form method="post" class="my-1 border p-2">
+        {% csrf_token %}
+        {{comment_form|crispy}}
+        <input type="submit" class="btn btn-success" value="Comment">
+    </form>
+    {% else %}
+    <p><a href="{% url 'Login' %}" class="btn btn-primary">Login</a> to write a comment</p>
+    {% endif %}
+    {% for comment in comments %}
+    <div class="my-1 border p-2">
+        <h3>{{comment.commenter}}</h3>
+        <small>Commented at {{comment.time}}</small>
+        <p>{{comment.body}}</p>
     </div>
-    
+    {% endfor %}
+</div>
+
 {% endblock content %}
 
 

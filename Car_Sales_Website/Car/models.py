@@ -9,7 +9,18 @@ class CarModel(models.Model):
     quantity=models.IntegerField()
     price=models.BigIntegerField()
     brand=models.ForeignKey(BrandModel,on_delete=models.CASCADE,related_name='cars')
-    buyers=models.ManyToManyField(User,related_name='purchased_cars',blank=True)
+    
+    def __str__(self):
+        return self.name
+
+class PurchaseModel(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="purchases_of_user")
+    car=models.ForeignKey(CarModel,on_delete=models.CASCADE,related_name="purchases_of_car")
+    purchasing_date=models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user} - {self.car} ({self.purchasing_date})"
+    
 class CommentModel(models.Model):
     car=models.ForeignKey(CarModel,on_delete=models.CASCADE,related_name='comments')
     commenter=models.CharField(max_length=50)
