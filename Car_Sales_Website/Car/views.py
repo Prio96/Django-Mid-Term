@@ -1,11 +1,8 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import redirect
 from django.views.generic import DetailView
 from .models import CarModel,PurchaseModel
 from .forms import CommentForm
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-# Create your views here.
-# @method_decorator(login_required,name='dispatch') 
 class CarDetail(DetailView):
     model=CarModel
     pk_url_kwarg='id'

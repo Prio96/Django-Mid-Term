@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<h1>Welcome to CarMart</h1>
-<div class="container" style="background-color: darkgreen;">
+<div class="d-flex justify-content-between" style="background-color: #162918">
+    <div class="w-50 m-auto text-white">
+        <h1>Welcome to CarMart</h1>
+        <p>Here we sell a lot of cars. Buy any car as many as you can!</p>
+    </div>
+    <div>
+        <img src="{% static 'intro.jpg' %}">
+    </div>
+</div>
+<div class="container-fluid" style="background-color: darkgreen;">
     <h3 class="text-white">Filter</h3>
     <div class="d-flex flex-wrap p-2 gap-2">
         {% for brand in brands %}

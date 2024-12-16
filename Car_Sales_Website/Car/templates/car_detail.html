@@ -14,7 +14,11 @@
         {% if car.quantity == 0 %}
         <p class="text-danger">Out of Stock</p>
         {% else %}
+        {% if not request.user.is_authenticated %}
+        <p><a href="{% url 'Login' %}" class="btn btn-primary">Login</a> to buy car</p>
+        {% else %}
         <a href="{% url 'BuyCar' car.id %}" class="btn btn-warning mx-auto">Buy Now</a>
+        {% endif %}
         {% endif %}
     </div>
 </div>
@@ -39,11 +43,3 @@
 </div>
 
 {% endblock content %}
-
-
-<!-- image=models.ImageField(upload_to='Car/media/uploads')
-    name=models.CharField(max_length=100)
-    description=models.TextField()
-    quantity=models.IntegerField()
-    price=models.BigIntegerField()
-    brand=models.ForeignKey(BrandModel,on_delete=models.CASCADE,related_name='cars') -->
